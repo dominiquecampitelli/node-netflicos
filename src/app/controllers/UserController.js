@@ -4,13 +4,14 @@ import bcrypt from "bcryptjs";
 class UserController {
     async store(req, res) {
         try {
-            const { email, password } = req.body;
+            const { name, email, password } = req.body;
 
             if (await User.findOne({ email }))
                 return res.status(400).send({ error: "Usuário já existe" });
 
             const user = await User.create(req.body);
 
+            user.name = name;
             user.password = password;
 
             return res.send({
@@ -19,7 +20,7 @@ class UserController {
             });
         } catch (err) {
             console.log(err);
-            return res.status(400).send({ error: "Registration failed" });
+            return res.status(400).send({ error: "Falha ao registrar" });
         }
     }
 
